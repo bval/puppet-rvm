@@ -48,7 +48,7 @@ class rvm::passenger::apache(
   exec { 'passenger-install-apache2-module':
     command     => "${binpath}rvm ${ruby_version} exec passenger-install-apache2-module -a",
     creates     => $modobjectpath,
-    environment => [ 'HOME=/root', ],
+    environment => [ "HOME=$home_dir", ],
     path        => '/usr/bin:/usr/sbin:/bin',
     require     => Class['rvm::passenger::gem','apache::dev'],
     timeout     => $install_timeout,
@@ -95,7 +95,7 @@ class rvm::passenger::apache(
         command     => "/bin/cp ${apache_mods_path}/passenger_extra.conf ${apache_mods_path}/passenger.conf",
         unless      => "/usr/bin/diff ${apache_mods_path}/passenger_extra.conf ${apache_mods_path}/passenger.conf",
         onlyif      => "test -f ${apache_mods_path}/passenger_extra.conf",
-        environment => [ 'HOME=/root', ],
+        environment => [ "HOME=$home_dir", ],
         path        => '/usr/bin:/usr/sbin:/bin',
         require     => Class['apache::mod::passenger'],
       }
